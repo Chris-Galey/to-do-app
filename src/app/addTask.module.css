@@ -1,0 +1,46 @@
+.item {
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  gap: 2rem;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+  gap: 1rem;
+}
+.content label {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.content input {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  width: 100%;
+  background-color: transparent;
+}
+.item button {
+  display: flex;
+  flex-basis: 10%;
+  align-self: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
