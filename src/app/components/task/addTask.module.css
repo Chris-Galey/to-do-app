@@ -3,7 +3,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 2rem;
-
+  height: 15vh;
   display: flex;
   flex-direction: row;
 

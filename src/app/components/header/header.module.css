@@ -1,0 +1,25 @@
+.header {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+}
+.header h1 {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+.list {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  list-style: none;
+}
+.item {
+  font-weight: 600;
+}

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "./addTask.module.css";
 
-export default function AddTask() {
+export default function AddTask({ onTaskChange }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [completed, setCompleted] = useState(false);
@@ -32,6 +32,7 @@ export default function AddTask() {
     }
     setDescription("");
     setTitle("");
+    onTaskChange();
   };
   return (
     <form className={styles.item} onSubmit={submitHandler}>
