@@ -1,55 +1,67 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Task from "./components/task/Task";
 import AddTask from "./components/task/AddTask";
-import { setToken } from "./context/AuthContext";
-import { useRouter } from "next/navigation";
+
 export default function Home() {
   const [data, setData] = useState([]);
-  console.log(data);
   const router = useRouter();
+  const storedToken = sessionStorage.getItem("jwtToken");
+  console.log(data);
 
   useEffect(() => {
-    const storedToken = sessionStorage.getItem("jwtToken");
-
     if (storedToken) {
-      getTasks(storedToken);
+      getTasks();
     } else {
       router.push("http://localhost:3001/login");
     }
-  }, []);
+  }, [storedToken]);
 
-  async function getTasks(token) {
+  async function getTasks() {
     try {
       const response = await fetch("http://localhost:3000/", {
         headers: {
-          Authorization: token,
+          "Content-Type": "application/json",
+          Authorization: storedToken,
         },
       });
-
       if (response.ok) {
-        const data = await response.json();
-        setData(data);
+        const responseData = await response.json();
+        setData(responseData);
       } else {
-        // Handle unauthorized or other error responses
-        if (response.status === 401) {
-          // Redirect to login if unauthorized
-          router.push("/login");
-        } else {
-          // Handle other error responses
-          console.log("Error: ", response.status);
-        }
+        router.push("/login");
       }
     } catch (err) {
       // Handle network or other errors
       console.log("Error: ", err);
     }
   }
+
+  async function addTask(task) {
+    try {
+      const response = await fetch("http://localhost:3000/", {
+        method: "POST",
+        body: JSON.stringify(task),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: storedToken,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  function deleteTask() {
+    getTasks();
+  }
+  function editTask() {
+    getTasks();
+  }
   return (
     <main className={styles.main}>
-      <AddTask onTaskChange={getTasks} />
+      <AddTask addTask={addTask} />
       <section className={styles.container}>
         {data.map((task) => {
           return (
@@ -58,7 +70,8 @@ export default function Home() {
               id={task._id}
               title={task.title}
               description={task.description}
-              onTaskChange={handleTaskChange}
+              editTask={editTask}
+              deleteTask={deleteTask}
             />
           );
         })}

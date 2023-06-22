@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "./task.module.css";
 
 export default function Task(props) {
-  const { title, description, id, onTaskChange } = props;
+  const { title, description, id, deleteTask, editTask } = props;
 
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(props.title);
@@ -21,7 +21,7 @@ export default function Task(props) {
     } catch (err) {
       console.log(err);
     }
-    onTaskChange();
+    deleteTask();
   };
   const editTitleHandler = (event) => {
     const value = event.target.value;
@@ -46,13 +46,16 @@ export default function Task(props) {
       await fetch(`http://localhost:3000/${props.id}`, {
         method: "PATCH",
         body: JSON.stringify(edited),
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: storedToken,
+        },
       });
     } catch (err) {
       console.log(err);
     }
     setEditing(false);
-    onTaskChange();
+    editTask();
   };
   return (
     <div className={styles.item}>
