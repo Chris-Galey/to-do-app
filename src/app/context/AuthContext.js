@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const router = useRouter();
-  console.log(user, token);
+
   const login = async (loginData) => {
     try {
-      console.log(loginData);
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         body: JSON.stringify(loginData),
@@ -19,9 +20,9 @@ export function AuthProvider({ children }) {
         },
       });
       const data = await response.json();
-      console.log(data);
 
       if (response.status === 200) {
+        setLoggedIn(true);
         setUser(loginData.email);
         setToken(data.token);
       } else {
@@ -38,17 +39,18 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    setLoggedIn(false);
     setUser(null);
     setToken(null);
 
     // Clear the token from session storage
     sessionStorage.removeItem("jwtToken");
-
+    router.push("/login");
     console.log("logged out");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, token }}>
+    <AuthContext.Provider value={{ user, login, logout, token, loggedIn }}>
       {children}
     </AuthContext.Provider>
   );

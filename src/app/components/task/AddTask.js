@@ -17,9 +17,9 @@ export default function AddTask({ addTask }) {
   const submitHandler = async (event) => {
     event.preventDefault();
     const data = { title, description };
+    addTask(data);
     setDescription("");
     setTitle("");
-    addTask(data);
   };
   return (
     <form className={styles.item} onSubmit={submitHandler}>

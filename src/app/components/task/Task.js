@@ -3,24 +3,12 @@ import { useState } from "react";
 import styles from "./task.module.css";
 
 export default function Task(props) {
-  const { title, description, id, deleteTask, editTask } = props;
-
+  const { id, deleteTask, editTask } = props;
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(props.title);
   const [editDescription, setEditDescription] = useState(props.description);
 
   const deleteHandler = async (event) => {
-    event.preventDefault();
-    const data = { title, description };
-    try {
-      await fetch(`http://localhost:3000/${props.id}`, {
-        method: "DELETE",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (err) {
-      console.log(err);
-    }
     deleteTask();
   };
   const editTitleHandler = (event) => {
@@ -36,26 +24,13 @@ export default function Task(props) {
   };
 
   const saveHandler = async (event) => {
-    event.preventDefault();
     const edited = {
       title: editTitle,
       description: editDescription,
     };
-    console.log(edited);
-    try {
-      await fetch(`http://localhost:3000/${props.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(edited),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: storedToken,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
+
+    editTask(edited);
     setEditing(false);
-    editTask();
   };
   return (
     <div className={styles.item}>

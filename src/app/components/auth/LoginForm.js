@@ -10,7 +10,6 @@ export default function LoginForm() {
   function loginHandler(event) {
     event.preventDefault();
     const loginData = { email, password };
-    console.log(loginData);
     login(loginData);
   }
 
